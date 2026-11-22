@@ -81,3 +81,15 @@ Install-ADDSForest -DomainName "lab.local" -DomainNetbiosName "LAB" -InstallDns 
 Promotion completed. Afterwards, `Get-DnsClientServerAddress` showed DC01's DNS had been switched back to `127.0.0.1` automatically, which is the correct setting for a domain controller.
 
 **Lesson:** Active Directory depends on DNS at every stage, even during setup. Checking the log first told me where to look, and testing one hypothesis directly (`Resolve-DnsName`) turned a vague hang into a specific, fixable error.
+
+---
+
+## 4. Server wouldn't shut down from the login screen
+
+**Symptom:** DC01 sat at the `LAB\Administrator` login screen and wouldn't power off from there.
+
+**What I found:** On Windows Server, the option to shut down without logging in is turned off by default (security policy "Shutdown: Allow system to be shut down without having to log on"). It's a deliberate hardening default, so nobody can power off a server from the console without authenticating.
+
+**Fix:** Logged in and shut down from the Start menu with a planned reason. I avoided a hard power-off, because cutting power to a domain controller while the Active Directory database is open risks corrupting it.
+
+**Lesson:** Not every "it won't do what I want" is a bug. Sometimes it's a security control, so find out why before forcing it.

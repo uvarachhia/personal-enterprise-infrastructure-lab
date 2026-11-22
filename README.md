@@ -55,6 +55,7 @@ Full write-ups are in the [troubleshooting log](docs/03-troubleshooting-log.md).
 | VirtualBox wouldn't save the VM's network settings | The error showed the VM's folder didn't exist; an earlier folder-creation error had left a half-created VM registered | Unregistered the broken VM and recreated it in a folder outside the VirtualBox program directory |
 | Server hung on "Restarting" after installing Guest Additions | The new display driver was the most likely cause | Switched the graphics controller to VBoxSVGA, raised video memory to 128 MB and disabled 3D acceleration via `VBoxManage`, then the server booted |
 | Domain controller promotion hung on "Verifying prerequisites" | `dcpromo.log` didn't exist, so promotion hadn't started. `Resolve-DnsName` returned error 10054: the server was sending DNS queries to itself (127.0.0.1) before any DNS service existed | Temporarily pointed DNS at a public resolver and promoted with `-CreateDnsDelegation:$false`. Promotion then switched DNS back to itself automatically |
+| Server wouldn't shut down from the login screen | Windows Server disables shutting down without logging in, as a hardening default | Logged in and shut down cleanly, instead of a hard power-off that could corrupt the AD database |
 
 ---
 
