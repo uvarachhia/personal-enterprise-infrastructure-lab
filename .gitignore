@@ -1,0 +1,15 @@
+# Never commit VM disks, ISOs or secrets
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.iso
+*.ova
+*.sav
+*.nvram
+*.pcap
+*.pcapng
+*.kdbx
+*password*
+*secret*
+.env
