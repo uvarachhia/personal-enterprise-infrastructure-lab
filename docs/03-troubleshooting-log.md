@@ -21,6 +21,8 @@ VERR_PATH_NOT_FOUND (Path not found.)
 "D:\VM\VBoxManage.exe" unregistervm "DC01"
 ```
 
+![VERR_PATH_NOT_FOUND error](../screenshots/06-p1-verr-path-not-found.png)
+
 **Lesson:** Read the full error. "Path not found" on a settings file pointed to a half-created VM, not a networking problem. Also, keep VM files separate from program files.
 
 ---
@@ -40,6 +42,8 @@ VERR_PATH_NOT_FOUND (Path not found.)
 ```
 
 The server then booted normally. I took a snapshot (`dc01-fresh-install`) straight away so I'd never have to repeat a reinstall.
+
+![VM display settings after the fix](../screenshots/08-p2-display-fix-vboxsvga.png)
 
 **Lesson:** Change one variable at a time, and snapshot known-good states before risky changes.
 
@@ -67,6 +71,10 @@ The server then booted normally. I took a snapshot (`dc01-fresh-install`) straig
    ```
    This confirmed it: queries were going to 127.0.0.1, where nothing was listening.
 
+![dcpromo.log missing](../screenshots/10-p3-dcpromo-log-missing.png)
+
+![Resolve-DnsName 10054 error](../screenshots/11-p3-resolve-dnsname-10054.png)
+
 **Fix:**
 
 ```powershell
@@ -80,6 +88,8 @@ Install-ADDSForest -DomainName "lab.local" -DomainNetbiosName "LAB" -InstallDns 
 
 Promotion completed. Afterwards, `Get-DnsClientServerAddress` showed DC01's DNS had been switched back to `127.0.0.1` automatically, which is the correct setting for a domain controller.
 
+![Promotion verified](../screenshots/13-dc01-promotion-verified.png)
+
 **Lesson:** Active Directory depends on DNS at every stage, even during setup. Checking the log first told me where to look, and testing one hypothesis directly (`Resolve-DnsName`) turned a vague hang into a specific, fixable error.
 
 ---
@@ -91,5 +101,7 @@ Promotion completed. Afterwards, `Get-DnsClientServerAddress` showed DC01's DNS 
 **What I found:** On Windows Server, the option to shut down without logging in is turned off by default (security policy "Shutdown: Allow system to be shut down without having to log on"). It's a deliberate hardening default, so nobody can power off a server from the console without authenticating.
 
 **Fix:** Logged in and shut down from the Start menu with a planned reason. I avoided a hard power-off, because cutting power to a domain controller while the Active Directory database is open risks corrupting it.
+
+![Login screen with no shutdown option](../screenshots/14-p4-login-screen-no-shutdown.png)
 
 **Lesson:** Not every "it won't do what I want" is a bug. Sometimes it's a security control, so find out why before forcing it.

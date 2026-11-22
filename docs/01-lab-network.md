@@ -41,6 +41,8 @@ Gateway:      10.10.10.1
 DHCP Server:  No
 ```
 
+![LabNet natnetwork list](../screenshots/01-labnet-natnetwork-list.png)
+
 ## Attaching a VM to LabNet
 
 When the network setting wouldn't change in the GUI, I attached the VM from the command line (the VM must be powered off):

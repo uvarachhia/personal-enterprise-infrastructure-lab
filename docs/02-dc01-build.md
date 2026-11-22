@@ -25,6 +25,8 @@ ipconfig
 
 The server had a random hostname and a `169.254.x.x` address with no gateway. That's an **APIPA** address: Windows couldn't find a DHCP server (expected, because LabNet's DHCP is off) and assigned itself a fallback address.
 
+![APIPA address before configuration](../screenshots/03-dc01-apipa-before-static-ip.png)
+
 ## Static IP
 
 A domain controller needs a fixed address because every client has to find it in the same place.
@@ -37,6 +39,8 @@ ping 10.10.10.1
 ```
 
 Result: DHCP disabled, IPv4 `10.10.10.10`, mask `255.255.255.0`, gateway `10.10.10.1`, DNS `127.0.0.1`, and 4/4 ping replies from the gateway.
+
+![Static IP and gateway ping](../screenshots/04-dc01-static-ip-and-ping.png)
 
 `ipconfig /all` also showed **NetBIOS over TCP/IP: Enabled**. That's a default worth noting: NetBIOS and LLMNR are commonly disabled in hardening guides because attackers can abuse them for credential capture. I've left them on for now so I can observe them in packet captures later.
 
@@ -77,6 +81,8 @@ Resolve-DnsName lab.local
 | NTDS, DNS, Netlogon | All Running | AD database, name resolution and logon services are up |
 | DC01's DNS client | `127.0.0.1` and `::1` | Promotion switched DNS back to itself, replacing my temporary setting |
 | `lab.local` lookup | SOA record, primary server `dc01.lab.local` | DC01 is authoritative for the zone |
+
+![Domain controller verification](../screenshots/13-dc01-promotion-verified.png)
 
 ## Next steps
 
